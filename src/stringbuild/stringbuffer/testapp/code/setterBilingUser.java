@@ -35,23 +35,17 @@ public class setterBilingUser {
                     break;
                 case 2:
                     ShowAddUser();
-                    System.out.print("Pilih Username: ");
-                    UserSelector(sc.nextInt());
-
-                    monthlyBilling(sc.nextInt());
+                    monthlyBilling();
                     break;
                 case 3:
                     ShowAddUser();
-                    System.out.print("Pilih Username: ");
-                    UserSelector(sc.nextInt());
-
-                    yearlyBilling(sc.nextInt());
+                    yearlyBilling();
                     break;
                 case 4:
                     addUser();
                     break;
                 case 5:
-                    System.out.println("Remove User belum diimplementasi.");
+                    RemoveUser();
                     break;
                 case 6:
                     ShowAddUser();
@@ -60,6 +54,8 @@ public class setterBilingUser {
                     priceFormater();
                     System.out.println("Exiting...");
                     return; // Keluar dari loop dan method
+                case 10:
+                    UpdateUser();
                 default:
                     System.out.println("Pilihan tidak valid, coba lagi.");
             }
@@ -87,7 +83,7 @@ public class setterBilingUser {
 
         billingUser.setUserCalendar(jumlahMingguan, 0, 0);
 
-        UserFormatter(selectUser,qtyPrice);
+        UserFormatter(selectUser,qtyPrice,"Weekly");
 
         System.out.println("Billing Mingguan: " + qtyPrice);
 
@@ -98,16 +94,28 @@ public class setterBilingUser {
         //priceFormater();
     }
 
-    public void monthlyBilling(int jumlahBulan) {
+    public void monthlyBilling() {
+
+
+        System.out.print("Pilih Username: ");
+        int selectUser = sc.nextInt();
+        UserSelector(selectUser);
+
+        System.out.print("Masukan Billing Bulanan : ");
+        int jumlahBulanan = sc.nextInt() ;
+
+
         int qtyPrice = 0;
 
-        if (jumlahBulan > 12) {
+        if (jumlahBulanan > 12) {
             System.out.println("Invalid Input, Please Use Menu NO 3");
         } else {
-            qtyPrice = 360000 * jumlahBulan;
+            qtyPrice = 360000 * jumlahBulanan;
         }
 
-        billingUser.setUserCalendar(0, jumlahBulan, 0);
+        billingUser.setUserCalendar(0, jumlahBulanan, 0);
+
+        UserFormatter(selectUser,qtyPrice,"Monthly");
 
         System.out.println("Billing Bulanan: " + qtyPrice);
 
@@ -118,12 +126,25 @@ public class setterBilingUser {
         priceFormater();
     }
 
-    public void yearlyBilling(int jumlahTahunan) {
+    public void yearlyBilling() {
+
+
+        System.out.print("Pilih Username: ");
+        int selectUser = sc.nextInt();
+        UserSelector(selectUser);
+
+        System.out.print("Masukan Billing Tahunan : ");
+        int jumlahTahunan = sc.nextInt() ;
+
+
+
         int qtyPrice = 3400000 * jumlahTahunan;
 
         billingUser.setUserCalendar(0, 0, jumlahTahunan);
 
         System.out.println("Billing Tahunan: " + qtyPrice);
+
+        UserFormatter(selectUser,qtyPrice,"Yearly");
 
         //menambahkan spasi biar rapi
         System.out.println();
@@ -136,8 +157,8 @@ public class setterBilingUser {
         return " Di Mulai Dari -> "+billingUser.getDefaultCalendar() + " Akan Berakhir pada -> " + billingUser.getDefaultCalendarUser();
     }
 
-
-    private String[] user = new String[10];
+    private  int manyUserSetter = 10 ;
+    private String[] user = new String[manyUserSetter];
 
     public String addUser() {
         System.out.println("Generate User");
@@ -194,8 +215,39 @@ public class setterBilingUser {
 
     }
 
-    public void UserFormatter(int selecUser, int hargaPaket) {
-        user[selecUser] += priceFormater() + hargaPaket;
+    public void UserFormatter(int selecUser, int hargaPaket , String jenisPaket) {
+        user[selecUser] += priceFormater() + " Harga Total : "+hargaPaket +" Jenis Paket : "+ jenisPaket;
+    }
+
+
+    public void RemoveUser() {
+        ShowAddUser();
+        System.out.print("Pilih Username: ");
+        int selectUser = sc.nextInt();
+        UserSelector(selectUser);
+
+        if (user[selectUser] != null) {
+            user[selectUser] = null;
+            if (user[selectUser] == null) {
+                System.out.println("Succesfully removed User");
+            }else{
+                System.out.println("User : " + user[selectUser]);
+            }
+
+        }
+
+
+    }
+
+    public void UpdateUser() {
+        System.out.print("Update User : ");
+
+        for (String u : user) {
+            if (u != null) { // Tampilkan hanya elemen yang bukan null
+
+            }
+        }
+
     }
 
 
