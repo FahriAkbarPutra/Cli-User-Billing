@@ -1,6 +1,5 @@
 package stringbuild.stringbuffer.testapp.code;
 
-import java.security.URIParameter;
 import java.util.Base64;
 import java.util.Scanner;
 
@@ -175,7 +174,41 @@ public class setterBilingUser {
 
     }
 
-    public void addUser(String inputUser) {
+    public void addUser(String input) {
+
+        boolean penuh = true;
+
+        for (int i = 0; i < user.length; i++) {
+            if (user[i] == null) {
+                // tidak menambahkan index arrar user
+                penuh = false;
+                break;
+            }
+        }
+
+        // jika penuh maka resize ukurukan array
+
+        if (penuh) {
+            var tempArray = user; // ini adalah berbentuk array
+            user = new String[user.length * 2];
+
+            for (int i = 0; i < tempArray.length; i++) {
+                user[i] = tempArray[i];
+            }
+        }
+
+        for (int i = 0; i < user.length; i++) {
+            if (user[i] == null) {
+                user[i] = input;
+                break;
+            }
+        }
+
+    }
+
+
+
+/*    public void addUser(String inputUser) {
         // Cari slot kosong dalam array untuk menambahkan user baru
 
         for (int i = 1; i <= user.length; i++) {
@@ -188,14 +221,18 @@ public class setterBilingUser {
 
 
 
-    }
+    }*/
 
     public void ShowAddUser() {
         // Tampilkan semua user yang sudah terdaftar
+
         System.out.println("\nDaftar User : ");
-        for (String u : user) {
-            if (u != null) { // Tampilkan hanya elemen yang bukan null
-                System.out.println(u);
+        for (var i = 0; i < user.length; i++) {
+            String list = user[i];
+            int no = i + 1;
+
+            if (list != null) {
+                System.out.println(no + ". " + list);
             }
         }
 
@@ -203,8 +240,10 @@ public class setterBilingUser {
     }
 
 
-    public void UserSelector(int selecUser) {
+    public void UserSelector(int selecUser ){
 
+
+            selecUser = (selecUser-1) ;
 
         if (selecUser < 0 || selecUser > user.length) {
             System.out.println("Invalid Select User");
@@ -216,33 +255,68 @@ public class setterBilingUser {
 
     }
 
-    public void UserFormatter(int selecUser, int hargaPaket , String jenisPaket) {
+    public void UserFormatter(int selecUser , int hargaPaket , String jenisPaket) {
+        selecUser = (selecUser-1) ;
         user[selecUser] += priceFormater() + " Harga Total : "+hargaPaket +" Jenis Paket : "+ jenisPaket;
     }
 
 
-    public void RemoveUser() {
+
+
+    public boolean RemoveUser() {
+        ShowAddUser();
+        System.out.print("Pilih Username: ");
+        int number = sc.nextInt();
+        sc.nextLine(); // Membersihkan newline dari buffer
+
+        if (number < 1 || number > user.length || user[number - 1] == null) {
+            System.out.println("Invalid selection");
+            return false;
+        }
+
+        System.out.println("User Selected = " + user[number - 1]);
+
+        // Geser elemen ke kiri untuk mengisi celah yang ditinggalkan oleh user yang dihapus
+        for (int i = number - 1; i < user.length - 1; i++) {
+            user[i] = user[i + 1];
+        }
+
+        // Hapus elemen terakhir karena telah digeser
+        user[user.length - 1] = null;
+
+        System.out.println("User removed successfully.");
+        return true;
+    }
+
+
+
+
+
+/*   public void RemoveUser() {
         ShowAddUser();
         System.out.print("Pilih Username: ");
         int selectUser = sc.nextInt();
         UserSelector(selectUser);
 
         if (user[selectUser] != null) {
-            user[selectUser] = null;
-            if (user[selectUser] == null) {
+          user[selectUser] = null;
+           if (user[selectUser] == null) {
 
 
                 System.out.println("Succesfully removed User");
-            }else{
+           }else{
                 System.out.println("User : " + user[selectUser]);
-            }
+         }
 
-        }
+       }
 
 
-    }
+    }*/
 
-/*    public void UpdateUser() {
+
+
+/*
+    public void UpdateUser() {
         System.out.print("Update User : ");
 
         for (int i = 0; i < user.length; i++) {
@@ -254,7 +328,8 @@ public class setterBilingUser {
         }
 
 
-    }*/
+    }
+*/
 
 
 }
