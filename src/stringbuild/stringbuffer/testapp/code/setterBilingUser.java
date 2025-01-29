@@ -1,6 +1,7 @@
 package stringbuild.stringbuffer.testapp.code;
 
 import java.util.Base64;
+import java.util.concurrent.TimeUnit;
 import java.util.Scanner;
 
 public class setterBilingUser {
@@ -67,31 +68,41 @@ public class setterBilingUser {
 
         System.out.print("Pilih Username: ");
         int selectUser = sc.nextInt();
-        UserSelector(selectUser);
 
-        System.out.print("Masukan Billing Mingguan : ");
-        int jumlahMingguan = sc.nextInt() ;
+        var isValid = checkerBillingUser(selectUser);
+
+        if (isValid) {
+            UserSelector(selectUser);
+
+            System.out.print("Masukan Billing Mingguan : ");
+            int jumlahMingguan = sc.nextInt() ;
 
 
-        int qtyPrice = 0;
+            int qtyPrice = 0;
 
-        if (jumlahMingguan > 4) {
-            System.out.println("Invalid Input, Please Use Menu NO 2");
-        } else {
-            qtyPrice = 140000 * jumlahMingguan;
+            if (jumlahMingguan > 4) {
+                System.out.println("Invalid Input, Please Use Menu NO 2");
+            } else {
+                qtyPrice = 140000 * jumlahMingguan;
+            }
+
+            billingUser.setUserCalendar(jumlahMingguan, 0, 0);
+
+            UserFormatter(selectUser,qtyPrice,"Weekly");
+
+            System.out.println("Billing Mingguan: " + qtyPrice);
+
+            //menambahkan spasi biar rapi
+            System.out.println();
+
+            //Tampilkan tanggal setelah perubahan
+            //priceFormater();
+        }else{
+            delayPromt(2000,selectUser);
         }
 
-        billingUser.setUserCalendar(jumlahMingguan, 0, 0);
 
-        UserFormatter(selectUser,qtyPrice,"Weekly");
 
-        System.out.println("Billing Mingguan: " + qtyPrice);
-
-        //menambahkan spasi biar rapi
-        System.out.println();
-
-        //Tampilkan tanggal setelah perubahan
-        //priceFormater();
     }
 
     public void monthlyBilling() {
@@ -99,31 +110,43 @@ public class setterBilingUser {
 
         System.out.print("Pilih Username: ");
         int selectUser = sc.nextInt();
-        UserSelector(selectUser);
-
-        System.out.print("Masukan Billing Bulanan : ");
-        int jumlahBulanan = sc.nextInt() ;
 
 
-        int qtyPrice = 0;
 
-        if (jumlahBulanan > 12) {
-            System.out.println("Invalid Input, Please Use Menu NO 3");
-        } else {
-            qtyPrice = 360000 * jumlahBulanan;
+
+/*         fungsi checker agar data tidak di isi kedua kalinya
+        System.out.println(checkerBillingUser(selectUser));*/
+
+        var isValid = checkerBillingUser(selectUser);
+
+        if (isValid) {
+            UserSelector(selectUser);
+            System.out.print("Masukan Billing Bulanan : ");
+            int jumlahBulanan = sc.nextInt() ;
+
+            int qtyPrice = 0;
+
+            if (jumlahBulanan > 12) {
+                System.out.println("Invalid Input, Please Use Menu NO 3");
+            } else {
+                qtyPrice = 360000 * jumlahBulanan;
+            }
+
+            billingUser.setUserCalendar(0, jumlahBulanan, 0);
+
+            UserFormatter(selectUser,qtyPrice,"Monthly");
+
+            System.out.println("Billing Bulanan: " + qtyPrice);
+
+            //menambahkan spasi biar rapi
+            System.out.println();
+
+            // Tampilkan tanggal setelah perubahan
+            priceFormater();
+        }else {
+                delayPromt(2000,selectUser);
         }
 
-        billingUser.setUserCalendar(0, jumlahBulanan, 0);
-
-        UserFormatter(selectUser,qtyPrice,"Monthly");
-
-        System.out.println("Billing Bulanan: " + qtyPrice);
-
-        //menambahkan spasi biar rapi
-        System.out.println();
-
-        // Tampilkan tanggal setelah perubahan
-        priceFormater();
     }
 
     public void yearlyBilling() {
@@ -131,26 +154,36 @@ public class setterBilingUser {
 
         System.out.print("Pilih Username: ");
         int selectUser = sc.nextInt();
-        UserSelector(selectUser);
 
-        System.out.print("Masukan Billing Tahunan : ");
-        int jumlahTahunan = sc.nextInt() ;
+        var isValid = checkerBillingUser(selectUser);
+
+        if (isValid) {
+
+
+            UserSelector(selectUser);
+
+            System.out.print("Masukan Billing Tahunan : ");
+            int jumlahTahunan = sc.nextInt() ;
 
 
 
-        int qtyPrice = 3400000 * jumlahTahunan;
+            int qtyPrice = 3400000 * jumlahTahunan;
 
-        billingUser.setUserCalendar(0, 0, jumlahTahunan);
+            billingUser.setUserCalendar(0, 0, jumlahTahunan);
 
-        System.out.println("Billing Tahunan: " + qtyPrice);
+            System.out.println("Billing Tahunan: " + qtyPrice);
 
-        UserFormatter(selectUser,qtyPrice,"Yearly");
+            UserFormatter(selectUser,qtyPrice,"Yearly");
 
-        //menambahkan spasi biar rapi
-        System.out.println();
+            //menambahkan spasi biar rapi
+            System.out.println();
 
-        // Tampilkan tanggal setelah perubahan
-        priceFormater();
+            // Tampilkan tanggal setelah perubahan
+            priceFormater();
+        }else{
+            delayPromt(2000,selectUser);
+        }
+
     }
 
     public  String priceFormater() {
@@ -206,7 +239,20 @@ public class setterBilingUser {
 
     }
 
+    public boolean checkerBillingUser(int inputIndexAray){
+        inputIndexAray = inputIndexAray - 1 ;
 
+        int counter = 0 ;
+
+            if(user[inputIndexAray].contains("Di Mulai Dari")){
+                return false ;
+            }else {
+                return true ;
+            }
+
+
+
+    }
 
 /*    public void addUser(String inputUser) {
         // Cari slot kosong dalam array untuk menambahkan user baru
@@ -286,6 +332,24 @@ public class setterBilingUser {
 
         System.out.println("User removed successfully.");
         return true;
+    }
+
+
+    public void delayPromt(int milis , int indexArray) {
+        indexArray = indexArray - 1 ;
+
+        System.out.println();
+
+        System.out.println("Data Sudah pernah Di Isi Dan Berakhir Pada : " + user[indexArray].substring(user[indexArray].lastIndexOf("->")+3,user[indexArray].length()) + "\n");
+
+
+        try {
+            Thread.sleep(3000); // Delay selama 3 detik
+        } catch (InterruptedException e) {
+            e.printStackTrace(); // Menangani kemungkinan InterruptedException
+        }
+
+
     }
 
 
